@@ -52,7 +52,12 @@ TO_TS="20250810061055" \
 OUT_DIR="example" \
 ./wayback_wp_pipeline.sh
 ```
-Defaults: CONCURRENCY=14 (auto-fallback to 10), MAX_SNAPSHOT=300, RETRY_FLAG="--retry 3", AUTO_PROCESS=YES. Optional: FROM_TS, SITE_URL, WAIT_SECS, AUTO_PROCESS=NO for prompts.
+Defaults: 
+- CONCURRENCY=14 (auto-fallback to 10) 
+- MAX_SNAPSHOT=300
+- RETRY_FLAG="--retry 3"
+- AUTO_PROCESS=YES. 
+- Optional: FROM_TS, SITE_URL, WAIT_SECS, AUTO_PROCESS=NO for prompts.
 
 **What it does**
 - Download from Wayback with retry/backoff and SSL fallback (`fix_ssl_store.rb` on SSL errors).
