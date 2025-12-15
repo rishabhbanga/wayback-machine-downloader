@@ -45,6 +45,41 @@ Windows tip: In File Explorer, Shift + Right Click your `bin` folder → "Open T
 - Speed and reliability of full-site recoveries from Wayback, with immediate WordPress readiness. Collapses SSL handling, retries, link cleanup, and WXR creation into one run.
 - Helps ops/infra, content teams, and devs who need WP-ready imports without deep Wayback/Ruby expertise.
 
+**Why this matters**
+This project is used to:
+- Recover businesses after hosting failures
+- Restore lost blogs and publications
+- Migrate legacy sites into modern CMS stacks
+- Support digital forensics and content archiving
+
+## Case study
+
+**Scenario:** Recovery of a content-heavy WordPress publication for a technology-focused digital platform    
+**Snapshot:** August 2, 2025 (Wayback Machine)  
+**Scale:** ~2,500 posts
+
+Using the Wayback → WordPress recovery pipeline, the site was:
+
+- Fully downloaded from the Internet Archive
+- Rewritten with root-relative links
+- Converted into a WordPress WXR (`export.xml`)
+- Prepared for direct import into WordPress
+
+**Total recovery time:** under 10 minutes  
+**Output:** static mirror + WXR export with posts, authors, and media references
+
+This workflow enabled rapid restoration and analysis of a multi-year content archive without requiring access to the original hosting environment.
+
+## Future work
+
+Planned and exploratory enhancements include:
+- **AI-assisted content classification**  
+  Automatically categorize recovered posts (e.g., blog, docs, announcements) to improve import structure and editorial workflows.
+- **LLM-based HTML cleanup**  
+  Use language models to normalize legacy HTML, remove archive artifacts, and improve semantic structure before WordPress import.
+- **Smarter media mapping**  
+  Improve detection and reconciliation of archived media assets to reduce broken references and duplicate uploads during import.
+
 **Pipeline quick start**
 ```bash
 BASE_URL="https://example.com/" \
