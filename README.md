@@ -56,6 +56,40 @@ Do note that you can also manually download this repository and run commands her
 
 *Windows tip*: In File Explorer, Shift + Right Click your `bin` folder → "Open Terminal here".
 
+3. **Alternative Run**:
+   # Wayback → WordPress recovery pipeline
+
+   ## Why this exists
+   - Problem solved: Speed and reliability of full-site recoveries from Wayback, with immediate WordPress readiness. Manual steps (SSL issues, retries, link cleanup, WXR creation) are collapsed into one scripted run.
+   - Who it helps: Ops/infra teams restoring lost sites; content managers needing a WP-ready import; developers auditing or migrating legacy snapshots; anyone without deep Ruby/Wayback expertise.
+   - What’s fixed: Automated snapshot download with sensible defaults and retry/backoff; SSL edge-case handling; archived/absolute links rewritten to deployable root-relative paths; WordPress detection; WXR export of posts; authors/widgets/theme info captured; live status so progress is clear.
+   - Why it matters: Cuts recovery time and risk, improves reproducibility, and reduces coordination overhead. Outputs drop into WP Playground or production WP with minimal follow-up.
+
+   ## Quick start
+   ```bash
+   BASE_URL="https://example.com/" \
+   TO_TS="20250810061055" \
+   OUT_DIR="example" \
+   ./wayback_wp_pipeline.sh
+   ```
+   Defaults: CONCURRENCY=14 (auto-fallback to 10), MAX_SNAPSHOT=300, RETRY_FLAG="--retry 3", AUTO_PROCESS=YES. Optional: FROM_TS, SITE_URL, WAIT_SECS, AUTO_PROCESS=NO for prompts.
+
+   ## What the pipeline does
+   - Download from Wayback with retries/backoff and SSL fallback (injects fix_ssl_store.rb on SSL errors).
+   - Rewrites Wayback/absolute links to root-relative for the target domain.
+   - Detects WordPress structure; extracts posts; builds `export.xml` (WXR), `authors_posts.md`, `widgets.txt`, `IMPORT_NOTES.md` (theme, authors, latest post, leftovers).
+   - Shows a live status line at the bottom of the terminal while preserving scrollback.
+
+   ## Outputs
+   - `OUT_DIR/` static mirror (as captured).
+   - `export.xml` (WXR), `authors_posts.md`, `widgets.txt`, `IMPORT_NOTES.md` inside `OUT_DIR/`.
+   - Root-relative links for easier hosting/Playground import.
+
+   ## Notes
+   - AUTO_PROCESS=YES proceeds even if WP heuristics are weak; set AUTO_PROCESS=NO to require confirmation.
+   - If concurrency 14 fails, the script retries automatically with concurrency 10.
+   - Status line only appears when stdout is a TTY (tput available); logging still goes to stdout/stderr.
+
 ## 🐳 Docker users
 We have a Docker image! See [#Packages](https://github.com/StrawberryMaster/wayback-machine-downloader/pkgs/container/wayback-machine-downloader) for the latest version. You can also build it yourself. Here's how:
 
