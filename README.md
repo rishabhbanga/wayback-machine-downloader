@@ -176,37 +176,6 @@ ruby wayback_machine_downloader https://example.com --only "/\.(gif|jpg|jpeg)$/i
 ruby wayback_machine_downloader https://example.com --exclude "/\.(gif|jpg|jpeg)$/i"
 ruby wayback_machine_downloader https://example.com --concurrency 20
 ```
-
----
-
-## Troubleshooting
-### SSL certificate errors
-If you see:
-```
-SSL_connect returned=1 errno=0 state=error: certificate verify failed (unable to get certificate CRL)
-```
-Create `fix_ssl_store.rb`:
-```ruby
-require "openssl"
-store = OpenSSL::X509::Store.new.tap(&:set_default_paths)
-OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:cert_store] = store
-```
-Run with:
-```bash
-RUBYOPT="-r./fix_ssl_store.rb" wayback_machine_downloader "http://example.com"
-```
-
-Verify your Ruby/OpenSSL:
-```ruby
-require "net/http"
-require "uri"
-uri = URI("https://web.archive.org/")
-Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
-  resp = http.get("/")
-  puts "GET / => #{resp.code}"
-end
-```
-
 ---
 
 ## 🤝 Contributing
